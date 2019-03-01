@@ -1,0 +1,46 @@
+package cloud.zk.server.web;
+
+import cloud.zk.server.config.ServerConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestController
+public class DiscoverController {
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
+
+    @Autowired
+    private ServerConfiguration serverConfiguration;
+
+    @RequestMapping("services")
+    public String Service() {
+        return discoveryClient.getServices().toString();
+    }
+
+    @RequestMapping("services/{instance}")
+    public List Service(@PathVariable("instance") String instance) {
+
+        return discoveryClient.getInstances(instance).stream().map(s -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("serviceId", s.getServiceId());
+            map.put("host", s.getHost());
+            map.put("port", s.getPort());
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+    @RequestMapping("hello")
+    public String hello() {
+        return "hello, this message come from " + serverConfiguration.getUrl();
+    }
+
+}
