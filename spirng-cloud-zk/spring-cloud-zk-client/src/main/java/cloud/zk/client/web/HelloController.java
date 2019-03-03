@@ -1,51 +1,82 @@
 package cloud.zk.client.web;
 
+import cloud.zk.client.annotation.CustomizedLoadBalanced;
+import cloud.zk.client.loadbalance.LoadBalanceRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
 public class HelloController {
 
-    @Value("${server.name}")
-    private String serverName;
-
-    private static List<String> urls = new ArrayList<>();
-
-    @Scheduled(fixedDelay = 30 * 1000)
-    public void updateUrls() {
-        List<String> newUrls = new ArrayList<>();
-        for (ServiceInstance instance : discoveryClient.getInstances(serverName)) {
-            newUrls.add(instance.getHost() + ":" + instance.getPort());
-        }
-        this.urls = newUrls;
-    }
+//    private volatile Set<String> urls = new HashSet<>();
+//
+//    @Scheduled(fixedDelay = 30 * 1000)
+//    public void updateUrls() {
+//        Set<String> oldUrls = this.urls;
+//        List<ServiceInstance> serviceInstances = discoveryClient.getInstances(serverName);
+//
+//        Set<String> newUrls = serviceInstances.stream().map(s ->
+//                s.isSecure() ?
+//                        "https://" + s.getHost() + ":" + s.getPort() :
+//                        "http://" + s.getHost() + ":" + s.getPort()
+//
+//        ).collect(Collectors.toSet());
+//        this.urls = newUrls;
+//        oldUrls.clear();
+//    }
 
 
     @Autowired
+    @CustomizedLoadBalanced
     private RestTemplate restTemplate;
 
     @Autowired
-    private DiscoveryClient discoveryClient;
+    @LoadBalanced
+    private RestTemplate lbRestTemplate;
 
-    @RequestMapping("hello")
-    public String hello(HttpServletRequest request) {
-        String url;
-        int index = new Random().nextInt(urls.size());
-        if (request.isSecure()) {
-            url = "https://" + urls.get(index) + "//" + "hello";
-        } else {
-            url = "http://" + urls.get(index) + "//" + "hello";
-        }
 
-        return restTemplate.getForObject(url, String.class);
+    @RequestMapping("/invoke/{serverName}/hello")
+    public String hello(@PathVariable String serverName) {
+
+        return restTemplate.getForObject(serverName + "/hello", String.class);
     }
+
+    @Bean
+    public ClientHttpRequestInterceptor interceptor() {
+        return new LoadBalanceRequestInterceptor();
+    }
+
+    @Bean
+    @CustomizedLoadBalanced
+    public RestTemplate restTemplate(ClientHttpRequestInterceptor interceptor) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        //增加拦截器
+//        restTemplate.setInterceptors(Arrays.asList(interceptor));
+        return restTemplate;
+    }
+
+    @Bean
+    @LoadBalanced
+    public RestTemplate lbRestTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public Object customizer(@Qualifier Collection<RestTemplate> restTemplates, ClientHttpRequestInterceptor interceptor) {
+        restTemplates.forEach(r -> {
+            r.setInterceptors(Arrays.asList(interceptor));
+        });
+        return new Object();
+    }
+
 }
