@@ -73,7 +73,10 @@ public class LoadBalanceRequestInterceptor implements ClientHttpRequestIntercept
         String targetUrl = urls.get(index);
 
         //最终服务器url
-        String actualURL = targetUrl + "/" + uri + "?" + requestURI.getQuery();
+        String actualURL = targetUrl + "/" + uri;
+        if (requestURI.getQuery() != null) {
+            actualURL += actualURL + "?" + requestURI.getQuery();
+        }
 
         System.out.println("本次请求的URL:" + actualURL);
         //执行请求
