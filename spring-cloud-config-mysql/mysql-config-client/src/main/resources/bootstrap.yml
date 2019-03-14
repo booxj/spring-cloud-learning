@@ -1,0 +1,32 @@
+server:
+  port: 8030
+spring:
+  application:
+    name: config-client
+  cloud:
+    config:
+      #      uri: http://localhost:8769
+      #      fail-fast: true
+      discovery:
+        enabled: true
+        service-id: config-jdbc-server
+  profiles:
+    active: dev
+  rabbitmq:
+    host: 47.110.42.93
+    port: 5672
+    username: admin
+    password: admin
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+
+# 暴露热刷新的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
