@@ -10,6 +10,7 @@
     <modules>
         <module>spring-cloud-zk-client</module>
         <module>spring-cloud-zk-server</module>
+        <module>spring-clloud-zk-gateway</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -32,6 +33,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <!--<dependency>-->

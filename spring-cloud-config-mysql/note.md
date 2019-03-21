@@ -1,3 +1,5 @@
+bus 刷新配置http://localhost:8030/actuator/bus-refresh (post)
+
 ```mysql
 CREATE TABLE `config_properties` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
