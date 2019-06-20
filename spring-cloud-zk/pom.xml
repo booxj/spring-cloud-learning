@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.booxj.springcloud</groupId>
-    <artifactId>spirng-cloud-zk</artifactId>
+    <artifactId>spring-cloud-zk</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>spring-cloud-zk-client</module>
         <module>spring-cloud-zk-server</module>
-        <module>spring-clloud-zk-gateway</module>
+        <module>spring-cloud-zk-gateway</module>
     </modules>
     <packaging>pom</packaging>
 

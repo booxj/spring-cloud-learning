@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableScheduling
-@EnableFeignClients(clients = HelloService.class) // 引入 FeignClient
+@EnableFeignClients(clients = HelloService.class) // 引入 @FeignClient
 @EnableRestClient(clients = HelloRestService.class) // 引入 @RestClient
 public class ZkClientApplication {
 

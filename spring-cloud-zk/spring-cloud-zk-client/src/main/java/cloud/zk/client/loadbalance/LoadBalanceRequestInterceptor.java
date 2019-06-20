@@ -96,15 +96,15 @@ public class LoadBalanceRequestInterceptor implements ClientHttpRequestIntercept
 
         HttpHeaders httpHeaders = new HttpHeaders();
         InputStream responseBody = urlConnection.getInputStream();
-        return new SimpleClientHttpReponse(httpHeaders, responseBody);
+        return new SimpleClientHttpResponse(httpHeaders, responseBody);
     }
 
-    private static class SimpleClientHttpReponse implements ClientHttpResponse {
+    private static class SimpleClientHttpResponse implements ClientHttpResponse {
 
         private HttpHeaders headers;
         private InputStream body;
 
-        public SimpleClientHttpReponse(HttpHeaders headers, InputStream body) {
+        public SimpleClientHttpResponse(HttpHeaders headers, InputStream body) {
             this.headers = headers;
             this.body = body;
         }

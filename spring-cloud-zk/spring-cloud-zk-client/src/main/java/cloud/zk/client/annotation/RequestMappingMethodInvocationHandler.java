@@ -71,7 +71,7 @@ public class RequestMappingMethodInvocationHandler implements InvocationHandler 
 
             // 获取 RestTemplate ， Bean 名称为“loadBalancedRestTemplate”
             // 获得 BeanFactory
-            RestTemplate restTemplate = beanFactory.getBean("lbRestTemplate", RestTemplate.class);
+            RestTemplate restTemplate = beanFactory.getBean("restTemplate", RestTemplate.class);
 
             return restTemplate.getForObject(url, method.getReturnType());
         }
