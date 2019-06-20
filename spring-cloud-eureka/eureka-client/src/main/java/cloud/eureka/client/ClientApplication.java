@@ -21,7 +21,8 @@ public class ClientApplication {
     String port;
 
     @RequestMapping("/hello")
-    public String home(@RequestParam(value = "name", defaultValue = "booxj") String name) {
-        return "hello " + name + " ,i am from port:" + port;
+    public String hello(@RequestParam(value = "name", defaultValue = "booxj") String name) throws InterruptedException {
+        return "hello " + name + " ,I am from port:" + port;
     }
+
 }
