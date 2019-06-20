@@ -1,3 +1,8 @@
+### spring-cloud-admin
+- cloud-admin-server:8769
+- cloud-eureka-client:8080
+- cloud-eureka-server:8761
+
 ### spring-cloud-config （基于git的配置中心）
 - config-client:8080
 - config-eureka-server:8761
