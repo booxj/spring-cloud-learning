@@ -8,5 +8,5 @@ eureka:
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/  #服务注册中心的配置内容，指定服务注册中心的位置
   server:
-    enable-self-preservation: true  # 关闭自我保护
+    enable-self-preservation: false  # 关闭自我保护
     eviction-interval-timer-in-ms: 60000  # 清理时间间隔  单位ms
