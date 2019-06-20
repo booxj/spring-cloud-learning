@@ -1,15 +1,15 @@
 server:
-  port: 8030
+  port: 8080
 spring:
   application:
-    name: config-client
+    name: mysql-config-client
   cloud:
     config:
-      #      uri: http://localhost:8769
+      #      uri: http://localhost:8888
       #      fail-fast: true
       discovery:
         enabled: true
-        service-id: config-jdbc-server
+        service-id: mysql-config-server
   profiles:
     active: dev
   rabbitmq:
@@ -22,9 +22,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-
-
-# 暴露热刷新的端点
 management:
   endpoints:
     web:
